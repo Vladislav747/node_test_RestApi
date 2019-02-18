@@ -3,9 +3,6 @@ var client = require('../config/init.js');
 //Class BaseModel For RestApi
 var BaseModel = require('./BaseModel.js');
 
-
-
-
 module.exports = function (app) {
   // create an object of BaseModel
   var basemodel = new BaseModel(client);
@@ -15,12 +12,8 @@ module.exports = function (app) {
     res.render('index');
   });
 
-
-
   app.get('/getUsers',
-    function (req, res) {
-      
-      
+    function (req, res) {      
       //call the API
       basemodel.list()
         .then(function (data) {
