@@ -1,4 +1,4 @@
-const form = document.getElementsByClassName('login-form');
+const form = document.getElementById('login-form');
 const login = document.getElementById('btnLogin');
 const uri = window.location.origin;
 
@@ -11,10 +11,7 @@ form.addEventListener('submit', (e) => {
     //Запрос на регистрацию
     fetch(uri+'/createUser', {
         method: 'post',
-        body: JSON.stringify({name: name, password:password}),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
+        body: JSON.stringify({name: name, password:password})
     })
         //Выводим в консоль результат выбора
         .then(res => res.json())
@@ -26,7 +23,7 @@ form.addEventListener('submit', (e) => {
 
 });
 
-form.addEventListener('submit', (e) => {
+login.addEventListener('click', (e) => {
 
     const name = document.querySelector('input[name=login]').value;
     const password = document.querySelector('input[name=password]').value;
@@ -35,10 +32,7 @@ form.addEventListener('submit', (e) => {
     //Запрос на регистрацию
     fetch(uri+'/login', {
         method: 'post',
-        body: JSON.stringify({name: name, password:password}),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
+        body: JSON.stringify({name: name, password:password})
     })
         //Выводим в консоль результат выбора
         .then(res => res.json())

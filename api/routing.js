@@ -12,7 +12,7 @@ module.exports = function (app) {
     res.render('index');
   });
 
-  app.get('/getUsers',
+  app.get('/api/getUsers',
     function (req, res) {      
       //call the API
       basemodel.list()
@@ -27,7 +27,7 @@ module.exports = function (app) {
     });
 
 
-  app.get('/getUsers/:id',
+  app.get('/api/getUsers/:id',
     function (req, res) {
       // create an object of BaseModel
       const basemodel = new BaseModel(client);
@@ -44,7 +44,7 @@ module.exports = function (app) {
     });
 
     //Here return token
-  app.post('/createUser',
+  app.post('/api/createUser',
     function (req, res) {
      //call the API
       basemodel.createUser(req,res)
@@ -59,7 +59,7 @@ module.exports = function (app) {
     });
 
     //Here return token
-  app.post('/login',
+  app.post('/api/login',
   function (req, res) {
    //call the API
     basemodel.loginUser(req,res)
@@ -73,7 +73,7 @@ module.exports = function (app) {
       });
   });
 
-  app.put('/updateUser/:id',
+  app.put('/api/updateUser/:id',
   function (req, res) {
     //call the API
      basemodel.update(req,res)
@@ -88,8 +88,7 @@ module.exports = function (app) {
       })
 
 
-
-    app.delete('/deleteUser/:id', 
+    app.delete('/api/deleteUser/:id', 
     function (req, res) {
       //call the API
        basemodel.deleteUser(req,res)

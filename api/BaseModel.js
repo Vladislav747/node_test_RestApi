@@ -1,11 +1,11 @@
 var validate = require("validate.js");
 
-const pg = require('pg');
-const settings = require('../config/settings');
-var connectionString = 'postgres://postgres:postgres@localhost:5432/' + settings.tableName;
-const client = new pg.Client(connectionString);
+// const pg = require('pg');
+// const settings = require('../config/settings');
+// var connectionString = 'postgres://postgres:postgres@localhost:5432/' + settings.tableName;
+// const client = new pg.Client(connectionString);
 
-client.connect();
+// client.connect();
 
 
 class BaseModel {
