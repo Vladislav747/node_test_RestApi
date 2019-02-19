@@ -37,22 +37,30 @@ class BaseModel {
     var UserId = parseInt(req.params.id);
 
     return new Promise(function (resolve, reject) {
+      //Id Validation in Base
+      const query = client.query('select * from users where id = $1',
+        [UserId]).then((data) => {
 
-      const query = client.query('select * from users where id = $1', [UserId]).then((res) => {
-        resolve('UserName is ' + res);
-      })
-        .catch((err) => {
-          reject(err);
+          if (data.rowCount == 0) {
+            resolve('There is no such UserId ' + UserId + '  Try another one')
+            return;
+          }
+          const query = client.query('select * from users where id = $1', [UserId]).then((res) => {
+            resolve('UserName is ' + res.rows[0].name + " userId " + UserId);
+          })
+            .catch((err) => {
+              reject(err);
+            });
         });
-    });
+    })
   }
-
+  
 
   //Create new User send token back
   createUser(req, res) {
-    const client = this.client;
-    //Validate that username we got not empty
-    if (validate.isEmpty(req.query.name)) {
+        const client = this.client;
+        //Validate that username we got not empty
+        if(validate.isEmpty(req.body.name)) {
       return res.status(400).json(
         {
           status: 'fail',
@@ -60,7 +68,7 @@ class BaseModel {
         }
       )
     }
-    var UserName = req.query.name;
+    var UserName = req.body.name;
 
     return new Promise(function (resolve, reject) {
       //User Validation in Base
@@ -92,7 +100,7 @@ class BaseModel {
   update(req, res) {
 
     //Validate that username we got not empty
-    if (validate.isEmpty(req.query.name)) {
+    if (validate.isEmpty(req.body.name)) {
       return res.status(400).json(
         {
           status: 'fail',
@@ -101,11 +109,11 @@ class BaseModel {
       )
     }
 
-    var UserName = req.query.name;
+    var UserName = req.body.name;
     var userId = parseInt(req.params.id);
 
     return new Promise(function (resolve, reject) {
-      //User Validation in Base
+      //Id Validation in Base
       const query = client.query('select * from users where id = $1',
         [userId]).then((data) => {
 
@@ -116,7 +124,7 @@ class BaseModel {
 
           const query = client.query('update users set name=$1 where id=$2',
             [UserName, userId]).then((res) => {
-              resolve('UserName updated for User Id '+ userId + ' Now your UserName is ' + UserName);
+              resolve('UserName updated for User Id ' + userId + ' Now your UserName is ' + UserName);
             })
 
             .catch((err) => {
@@ -130,7 +138,7 @@ class BaseModel {
   loginUser(req, res) {
 
     //Validate that username we got not empty
-    if (validate.isEmpty(req.query.name)) {
+    if (validate.isEmpty(req.body.name)) {
       return res.status(400).json(
         {
           status: 'fail',
@@ -139,7 +147,7 @@ class BaseModel {
       )
     }
 
-    var userName = req.query.name;
+    var userName = req.body.name;
 
     return new Promise(function (resolve, reject) {
 
@@ -147,14 +155,14 @@ class BaseModel {
       const query = client.query('select * from users where name = $1',
         [userName]).then((data) => {
 
-          if (data.rowCount = 0) {
-            resolve(' Sorry ' + userName + ' can not be found')
+          if (data.rowCount == 0) {
+            resolve(' Sorry User ' + userName + ' can not be found')
             return;
           }
 
           const query = client.query('select token from users where name=$1',
             [userName]).then((res) => {
-              resolve('Login successful your token is  - ' + res.rows[0]);
+              resolve('Login successful your token is  - ' + res.rows[0].token);
             })
             .catch((err) => {
               reject(err);
@@ -173,7 +181,7 @@ class BaseModel {
       const query = client.query('select * from users where id = $1',
         [userId]).then((data) => {
 
-          if (data.rowCount = 0) {
+          if (data.rowCount == 0) {
             resolve(' Sorry no such ' + userId + ' can not be found')
             return;
           }
